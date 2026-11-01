@@ -1,0 +1,2 @@
+{ "name": "sonic-text-engine", "version": "1.0.0", "description": "Sprite-font text engine with per-letter font randomization (Genesis Sonic lettering).",
+  "main": "dist/sonic-text.js", "style": "dist/sonic-text.css", "license": "MIT", "files": ["dist/*.js","dist/*.css","dist/manifest.json"], "keywords": ["sprite-font","pixel","sonic","game","text"] }
