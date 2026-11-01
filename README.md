@@ -1,4 +1,4 @@
-# Sonic Text Engine
+# CSSonic
 
 A tiny sprite-font engine for web games. Turn any message into glitchy, pixel-perfect Genesis-era Sonic lettering,
 with **per-letter font randomization**, auto-fit, balanced line wrapping and `:sonic:` / `:tails:` / `:knuckles:` / `:ring:` replacements.
@@ -77,6 +77,10 @@ Class pattern: `sf-<font>-<char>` and `sf-e-<head|body>-<sonic|tails|knuckles>`.
 
 The DOM output works as an overlay. For a canvas game, read `dist/manifest.json` (sprite positions in `atlas.png`)
 and `ctx.drawImage` the rectangles with `imageSmoothingEnabled = false`.
+
+## Important information to know
+
+This should not be used in any commercial intentions as this is a personal-use tool allowed to be used by everybody.
 
 ## Credits and legal
 
