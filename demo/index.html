@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sonic Text Engine: demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../dist/sonic-text.css">
+<style>
+:root{--bg:#050508;--panel:#0d0d1c;--line:#2a2ad0;--ink:#f2f2ff;--dim:#8d8dc8;--hot:#ffe600;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Silkscreen","Courier New",monospace;font-size:13px;line-height:1.5}
+main{max-width:1020px;margin:0 auto;padding:20px 16px 40px;display:grid;gap:18px}
+h1{font-size:18px;margin:0;font-weight:700;letter-spacing:.04em}h2{font-size:13px;margin:0}
+p.sub{margin:4px 0 0;color:var(--dim)}
+#stage{background:#000;border:2px solid var(--line);box-shadow:0 0 0 2px #000,0 0 0 4px #5a5aff;aspect-ratio:5/4;width:100%;max-width:640px;margin:0 auto;padding:16px}
+.panel{background:var(--panel);border:2px solid var(--line);padding:14px;display:grid;gap:14px}
+.row{display:grid;gap:6px}label.l{color:var(--dim)}
+textarea,select{width:100%;background:#000;color:var(--ink);border:2px solid var(--line);font:inherit;padding:8px;border-radius:0}
+textarea{resize:vertical;min-height:64px;font-size:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+input[type=range]{width:100%;accent-color:var(--hot)}
+.tg{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+.tg input{position:absolute;opacity:0}
+.tg i{width:38px;height:20px;background:#000;border:2px solid var(--line);position:relative;flex:none}
+.tg i::after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;background:var(--dim)}
+.tg input:checked+i{border-color:var(--hot)}.tg input:checked+i::after{left:20px;background:var(--hot)}
+.tg input:focus-visible+i{outline:2px solid #fff;outline-offset:2px}
+.tg small{color:var(--dim);display:block}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+button{font:inherit;background:var(--line);color:#fff;border:0;padding:10px 16px;cursor:pointer;border-radius:0}
+button.alt{background:#000;border:2px solid var(--line)}
+button:hover{background:#4a4af0}button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.note{color:var(--dim);font-size:11px}
+pre{margin:0;background:#000;border:2px solid var(--line);padding:12px;overflow-x:auto;font:12px/1.5 "Courier New",monospace;color:#cfe}
+.lib{padding:10px 12px;border:2px dashed var(--line);color:var(--dim)}
+.lib{display:grid;gap:12px;border-style:dashed}
+.lib .grp{display:grid;gap:6px}
+.lib h3{margin:0;font-size:12px;font-weight:700;color:var(--hot);letter-spacing:.04em}
+.lib .fl{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:flex-end}
+.lib figure{margin:0;display:grid;gap:4px;justify-items:start}
+.lib figcaption{font-size:10px;color:var(--dim)}
+.lib span.sf-g{margin:0 2px}
+</style></head><body><main>
+<header><h1>Sonic Text Engine: demo</h1>
+<p class="sub">A sprite-font engine for web games. This page is built entirely with <code>sonic-text.css</code> and <code>sonic-text.js</code>.</p></header>
+<div id="stage"></div>
+<section class="panel">
+ <div class="row"><label class="l" for="t">Message</label><textarea id="t" spellcheck="false">FONT DEMO
+ZONE act 1</textarea>
+  <div class="btns" id="ins"><button class="alt" data-i="🦔">+ Sonic</button><button class="alt" data-i="🦊">+ Tails</button><button class="alt" data-i="🔴">+ Knuckles</button><button class="alt" data-i="💍">+ Ring</button></div>
+  <span class="note">Replacements: :sonic: :tails: :knuckles: :ring: or 🦔 🦊 🔴 🥊 🔵 💍</span></div>
+ <div class="grid">
+  <div class="row"><label class="tg"><input type="checkbox" id="random"><i></i><span>Randomize fonts per letter<small>off: one font (below), or one random font per game</small></span></label>
+   <label class="tg"><input type="checkbox" id="g2"><i></i><span>Include Sonic 2 letters</span></label>
+   <label class="tg"><input type="checkbox" id="g3"><i></i><span>Include Sonic 3 letters</span></label></div>
+  <div class="row"><label class="l" for="base">Font (by game)</label><select id="base"></select>
+   <label class="l" for="emoji">Replacement sprites</label><select id="emoji"><option value="head">Head icons</option><option value="body">Full body</option></select></div>
+  <div class="row"><label class="tg"><input type="checkbox" id="auto"><i></i><span>Auto format<small>fits size, balances lines</small></span></label>
+   <label class="tg"><input type="checkbox" id="position"><i></i><span>Position randomization<small>off: straight line, even gaps</small></span></label>
+   <label class="tg"><input type="checkbox" id="ring"><i></i><span>Ring for the letter O</span></label>
+   <label class="tg"><input type="checkbox" id="anim"><i></i><span>Animate the glitch</span></label></div>
+ </div>
+ <div class="grid">
+  <div class="row"><label class="l" for="glitch">Glitch <b id="glv"></b></label><input type="range" id="glitch" min="0" max="100" value="55"></div>
+  <div class="row"><label class="l" for="spacing">Spacing <b id="spv"></b></label><input type="range" id="spacing" min="0" max="100" value="55"></div>
+  <div class="row"><label class="l" for="scale">Letter size <b id="scv"></b></label><input type="range" id="scale" min="1" max="5" value="3"></div>
+ </div>
+ <div class="btns"><button id="re">Reroll</button><button class="alt" id="cp">Copy code</button></div>
+</section>
+<section class="panel"><h2>Use it in your game</h2>
+ <div class="lib" id="lib"></div>
+ <pre id="code"></pre>
+</section></main>
+<script src="../dist/sonic-text.js"></script>
+<script>
+const $=i=>document.getElementById(i), stage=$('stage');
+const GAMES={1:'Sonic the Hedgehog',2:'Sonic the Hedgehog 2',3:'Sonic the Hedgehog 3'};
+const byGame={};SonicText.fonts.forEach(f=>(byGame[f.game]=byGame[f.game]||[]).push(f));
+Object.keys(byGame).forEach(g=>{
+ // dropdown: one group per game title
+ const og=document.createElement('optgroup');og.label=GAMES[g]||'Game '+g;
+ byGame[g].forEach(f=>og.appendChild(new Option(f.label,f.id)));$('base').appendChild(og);
+ // list: every font drawn with plain CSS classes (no JS engine), under its game title
+ const grp=document.createElement('div');grp.className='grp';
+ const h=document.createElement('h3');h.textContent=GAMES[g]||'Game '+g;grp.appendChild(h);
+ const fl=document.createElement('div');fl.className='fl';
+ byGame[g].forEach(f=>{const fig=document.createElement('figure');
+  const sp=document.createElement('span');sp.className='sf-g sf-'+f.id+'-'+(f.chars.includes('A')?'A':f.chars[0]);sp.style.setProperty('--sf-scale',2);
+  const cap=document.createElement('figcaption');cap.textContent=f.label.replace(/^Sonic \d /,'');
+  fig.append(sp,cap);fl.appendChild(fig)});
+ grp.appendChild(fl);$('lib').appendChild(grp)});
+function opts(){return{random:$('random').checked,games:[2,3].filter(g=>$('g'+g).checked),base:$('base').value,emoji:$('emoji').value,
+ scale:$('auto').checked?'auto':+$('scale').value,ring:$('ring').checked,position:$('position').checked,glitch:+$('glitch').value/100,spacing:+$('spacing').value/100,animate:$('anim').checked?140:0}}
+let seed=1337;
+function draw(){const o=opts();o.seed=seed;
+ $('glv').textContent=$('glitch').value;$('spv').textContent=$('spacing').value;$('scale').disabled=$('auto').checked;
+ SonicText.render(stage,$('t').value,o);
+ $('scv').textContent=$('auto').checked?'auto '+stage.dataset.sfScale+'x':o.scale+'x';
+ const c={...o};delete c.seed;if(!c.animate)delete c.animate;
+ $('code').textContent=`<link rel="stylesheet" href="sonic-text.css">\n<script src="sonic-text.js"><\/script>\n<div id="msg" style="width:640px;height:512px"></div>\n<script>\n  SonicText.render(document.getElementById("msg"),\n    ${JSON.stringify($('t').value)},\n    ${JSON.stringify(c)});\n<\/script>`;
+}
+['t','random','g2','g3','base','emoji','auto','ring','position','glitch','spacing','scale'].forEach(i=>$(i).addEventListener('input',draw));
+$('anim').addEventListener('input',draw);
+$('re').onclick=()=>{seed=(Math.random()*1e9)|0;draw()};
+$('cp').onclick=()=>navigator.clipboard&&navigator.clipboard.writeText($('code').textContent);
+$('ins').addEventListener('click',e=>{const i=e.target.dataset.i;if(!i)return;const a=$('t'),p=a.selectionStart;a.value=a.value.slice(0,p)+i+a.value.slice(a.selectionEnd);a.focus();a.selectionStart=a.selectionEnd=p+i.length;draw()});
+if(matchMedia('(prefers-reduced-motion: reduce)').matches)$('anim').disabled=true;
+draw();
+</script></body></html>

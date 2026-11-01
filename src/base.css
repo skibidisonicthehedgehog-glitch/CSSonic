@@ -1,0 +1,16 @@
+/* sonic-text-engine base styles. Glyph classes (.sf-<font>-<char>) are appended by the build. */
+.sf-text{--sf-ink:#fff;display:flex;align-items:center;justify-content:center;text-align:center;
+  line-height:0;font-size:0;isolation:isolate;overflow:visible}
+.sf-inner{width:100%}
+.sf-line{display:block;text-wrap:balance}
+.sf-word{display:inline-block;white-space:nowrap;vertical-align:middle}
+.sf-gw{display:inline-block;position:relative;vertical-align:middle}
+.sf-g{display:inline-block;--sf-scale:3;
+  width:calc(var(--w) * 1px * var(--sf-scale));height:calc(var(--h) * 1px * var(--sf-scale));
+  background-image:var(--sf-atlas,url(sprites/atlas.png));background-repeat:no-repeat;
+  background-size:calc(var(--sf-aw) * 1px * var(--sf-scale)) calc(var(--sf-ah) * 1px * var(--sf-scale));
+  background-position:calc(var(--x) * -1px * var(--sf-scale)) calc(var(--y) * -1px * var(--sf-scale));
+  image-rendering:pixelated}
+.sf-ring{display:inline-block;box-sizing:border-box;border:solid var(--sf-ink);border-radius:50%}
+.sf-dark::after{content:"";position:absolute;inset:-2px;background:#303030;z-index:-1}
+/* Pure CSS use, no JS:  <span class="sf-g sf-s1c-A" style="--sf-scale:4"></span> */
